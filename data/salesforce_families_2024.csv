@@ -1,0 +1,51 @@
+Record_ID,Family_ID,Family_Name,Intake_Date,Delivery_Date,Status,Adults,Children,Furniture_Items,Case_Worker,Notes
+SF-001,FAM-101,Ahmed Family,2024-01-08,2024-01-15,Completed,2,3,Bed frame; dresser; sofa,Maria Santos,
+SF-002,FAM-102,Patel Family,2024-01-10,2024-01-22,Completed,1,2,Dining table; chairs; bed frame,James Okafor,
+SF-003,FAM-103,Nguyen Family,2024-01-12,,Referral,2,1,Sofa; coffee table,Maria Santos,Referred from YWCA - awaiting confirmation
+SF-004,FAM-104,Brown Family,2024-01-18,2024-01-25,Completed,2,4,Bunk beds; dresser; sofa,Lisa Chen,
+SF-005,FAM-105,Garcia Family,2024-01-20,2024-02-01,Completed,1,1,Bed frame; nightstand,James Okafor,
+SF-006,FAM-106,Wilson Family,2024-01-25,,Cancelled,3,2,,Lisa Chen,Client unreachable after 3 attempts
+SF-007,FAM-107,Kim Family,2024-02-03,2024-02-10,Completed,2,2,Sofa; dining table; dresser,Maria Santos,
+SF-008,FAM-108,Johnson Family,2024-02-07,2024-02-14,Completed,1,3,Bunk beds; bed frame; dresser,James Okafor,
+SF-009,FAM-101,Ahmed Family,2024-02-10,2024-02-18,Completed,2,3,Additional chairs; lamp,Maria Santos,Follow-up delivery - same family FAM-101
+SF-010,FAM-109,Singh Family,2024-02-15,2024-02-22,Completed,2,1,Sofa; coffee table; bookshelf,Lisa Chen,
+SF-011,FAM-110,Taylor Family,2024-02-20,,In Progress,1,2,Bed frame; dresser,James Okafor,Scheduled for March
+SF-012,FAM-111,Martin Family,2024-02-28,2024-03-07,Completed,3,3,Dining table; chairs; sofa; dresser,Maria Santos,
+SF-013,FAM-112,Kowalski Family,2023-11-15,2023-12-01,Completed,2,2,Sofa; bed frame,Lisa Chen,Delivered Dec 2023 - logged late into 2024 system
+SF-014,FAM-113,White Family,2024-03-05,2024-03-12,Completed,1,1,Bed frame; nightstand; lamp,James Okafor,
+SF-015,FAM-114,Harris Family,2024-03-10,,Referral,2,3,Dining table; chairs,Maria Santos,Referred from food bank
+SF-016,FAM-115,Clark Family,2024-03-18,2024-03-25,Completed,2,2,Sofa; coffee table; dresser,Lisa Chen,
+SF-017,FAM-116,Lewis Family,2024-03-22,2024-03-29,Completed,1,2,Bunk beds; dresser,James Okafor,
+SF-018,FAM-117,Robinson Family,2024-04-02,2024-04-09,Completed,3,4,Dining table; chairs; sofa; bunk beds,Maria Santos,
+SF-019,FAM-118,Walker Family,2024-04-08,,Cancelled,1,1,,Lisa Chen,Family relocated out of area
+SF-020,FAM-119,Hall Family,2024-04-15,2024-04-22,Completed,2,2,Bed frame; sofa; dresser,James Okafor,
+SF-021,FAM-120,Allen Family,2024-04-20,2024-04-28,Completed,1,3,Bunk beds; dresser; sofa,Maria Santos,
+SF-022,FAM-121,Young Family,2024-05-03,2024-05-10,Completed,2,1,Sofa; coffee table,Lisa Chen,
+SF-023,FAM-122,Hernandez Family,2024-05-08,2024-05-16,Completed,1,2,Bed frame; dresser; nightstand,James Okafor,
+SF-024,FAM-123,Okonkwo Family,2024-05-14,,Referral,3,3,Dining table; sofa,Maria Santos,Referred from shelter - pending intake assessment
+SF-025,FAM-124,Wright Family,2024-05-20,2024-05-28,Completed,2,2,Sofa; dresser; dining table,Lisa Chen,
+SF-026,FAM-125,Scott Family,2024-06-03,2024-06-11,Completed,1,1,Bed frame; nightstand,James Okafor,
+SF-027,FAM-126,Fernandez Family,2024-06-08,2024-06-15,Completed,2,2,Additional dresser; chairs,Maria Santos,
+SF-028,FAM-127,Green Family,2024-06-14,2024-06-21,Completed,2,3,Bunk beds; sofa; dresser,Lisa Chen,
+SF-029,FAM-128,Adams Family,2024-06-20,,In Progress,1,2,,James Okafor,Waiting for inventory
+SF-030,FAM-129,Baker Family,2024-07-02,2024-07-09,Completed,3,2,Dining table; chairs; sofa,Maria Santos,
+SF-031,FAM-130,Carter Family,2024-07-08,2024-07-16,Completed,1,3,Bunk beds; bed frame; dresser,Lisa Chen,
+SF-032,FAM-101,Ahmed Family,2024-07-15,2024-07-23,Completed,2,1,Bookshelf; lamp,James Okafor,Duplicate record - same transaction as SF-009 logged twice in error
+SF-033,FAM-131,Perez Family,2024-07-22,2024-07-30,Completed,1,2,Bed frame; dresser,Maria Santos,
+SF-034,FAM-132,Roberts Family,2024-08-05,2024-08-13,Completed,2,3,Sofa; dining table; bunk beds,Lisa Chen,
+SF-035,FAM-133,Turner Family,2024-08-12,,Referral,1,1,Bed frame,James Okafor,Awaiting shelter confirmation
+SF-036,FAM-134,Phillips Family,2024-08-20,2024-08-28,Completed,3,4,Dining table; chairs; sofa; dresser; bunk beds,Maria Santos,Large family - priority case
+SF-037,FAM-135,Campbell Family,2024-09-04,2024-09-11,Completed,2,2,Sofa; dresser; coffee table,Lisa Chen,
+SF-038,FAM-136,Parker Family,2024-09-10,2024-09-18,Completed,1,2,Bunk beds; dresser,James Okafor,
+SF-039,FAM-137,Evans Family,2024-09-17,,Cancelled,2,1,,Maria Santos,Intake cancelled - family already served under FAM-120
+SF-040,FAM-138,Edwards Family,2024-09-24,2024-10-02,Completed,1,3,Bed frame; sofa; dresser,Lisa Chen,
+SF-041,FAM-139,Collins Family,2024-10-07,2024-10-15,Completed,2,2,Dining table; chairs; sofa,James Okafor,
+SF-042,FAM-140,Stewart Family,2024-10-14,2024-10-22,Completed,1,1,Bed frame; nightstand; lamp,Maria Santos,
+SF-043,FAM-141,Sanchez Family,2024-10-21,2024-10-29,Completed,3,3,Sofa; dining table; bunk beds; dresser,Lisa Chen,
+SF-044,FAM-142,Morris Family,2024-11-04,2024-11-12,Completed,2,2,Sofa; coffee table; dresser,James Okafor,
+SF-045,FAM-143,Rogers Family,2024-11-11,,Referral,1,2,Bed frame; dresser,Maria Santos,Referred from school social worker
+SF-046,FAM-144,Reed Family,2024-11-18,2024-11-26,Completed,2,3,Bunk beds; sofa; dining table,Lisa Chen,
+SF-047,FAM-145,Cook Family,2024-12-03,2024-12-10,Completed,1,1,Bed frame; dresser,James Okafor,
+SF-048,FAM-146,Morgan Family,2024-12-09,2024-12-17,Completed,2,2,Sofa; dining table; chairs,Maria Santos,
+SF-049,FAM-147,Bell Family,2024-12-16,,In Progress,1,3,Bunk beds; dresser,Lisa Chen,Scheduled Jan 2025 - logged in 2024
+SF-050,FAM-148,Murphy Family,2025-01-06,2025-01-14,Completed,2,1,Sofa; coffee table,James Okafor,Logged under 2024 in error
