@@ -1,0 +1,270 @@
+{
+  "name": "Reconciliation_workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -80
+      ],
+      "id": "f044c8d1-26ad-45c6-b127-fa20ec9d58c0",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "13KMDkiLrv6lJ4kSVU9U58Vr8SWuZIgSGj4Bn5wm0Rew",
+          "mode": "list",
+          "cachedResultName": "Salesforce Families 2024_v2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13KMDkiLrv6lJ4kSVU9U58Vr8SWuZIgSGj4Bn5wm0Rew/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1783775624,
+          "mode": "list",
+          "cachedResultName": "salesforce_families_2024_v2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13KMDkiLrv6lJ4kSVU9U58Vr8SWuZIgSGj4Bn5wm0Rew/edit#gid=1783775624"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -144,
+        -80
+      ],
+      "id": "5a4b01ee-0935-4e33-9d4f-fc8026b20c7f",
+      "name": "Salesforce_Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "atA7uN8H7Fg1dZEw",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1nK29FPBQ8FMvHuyUr9f50ownqS4FwVOpa73AxBoIzh4",
+          "mode": "list",
+          "cachedResultName": "Annual Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nK29FPBQ8FMvHuyUr9f50ownqS4FwVOpa73AxBoIzh4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 920688218,
+          "mode": "list",
+          "cachedResultName": "annual_report_2024",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nK29FPBQ8FMvHuyUr9f50ownqS4FwVOpa73AxBoIzh4/edit#gid=920688218"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        0,
+        -80
+      ],
+      "id": "c62f37de-550c-466a-aded-ba773da6371d",
+      "name": "Annual Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "atA7uN8H7Fg1dZEw",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get data from previous nodes\nconst salesforceRows = $('Salesforce_Data').all().map(item => item.json);\nconst annualReport = $('Annual Data').first().json;\n\nconst reportedValue = parseInt(annualReport.Reported_Value);\nconst periodStart = annualReport.Reporting_Period_Start;\nconst periodEnd = annualReport.Reporting_Period_End;\n\nconst anomalies = [];\n\n// Step 1 - Filter only Completed records\nconst completedRecords = salesforceRows.filter(r => r.Status === 'Completed');\n\n// Step 2 - Flag and filter out-of-range delivery dates\nconst inRangeRecords = [];\nfor (const r of completedRecords) {\n  const delivery = r.Delivery_Date || '';\n  if (!delivery || delivery < periodStart || delivery > periodEnd) {\n    anomalies.push(`${r.Record_ID} (${r.Family_Name}): Delivery date '${delivery}' outside reporting period`);\n  } else {\n    inRangeRecords.push(r);\n  }\n}\n\n// Step 3 - Flag non-completed records\nfor (const r of salesforceRows) {\n  if (r.Status !== 'Completed') {\n    anomalies.push(`${r.Record_ID} (${r.Family_Name}): Status is '${r.Status}' - excluded`);\n  }\n}\n\n// Step 4 - Deduplicate by Family_ID\nconst familyMap = {};\nfor (const r of inRangeRecords) {\n  const fid = r.Family_ID;\n  if (!familyMap[fid]) {\n    familyMap[fid] = r;\n  } else {\n    anomalies.push(`${r.Record_ID} (${r.Family_Name}): Duplicate Family_ID ${fid} - counted once only`);\n  }\n}\n\nconst uniqueFamilyCount = Object.keys(familyMap).length;\nconst gap = reportedValue - uniqueFamilyCount;\n\nreturn [{\n  json: {\n    raw_salesforce_count: salesforceRows.length,\n    after_status_filter: completedRecords.length,\n    after_date_filter: inRangeRecords.length,\n    unique_families: uniqueFamilyCount,\n    annual_report_value: reportedValue,\n    gap: gap,\n    reporting_period: `${periodStart} to ${periodEnd}`,\n    anomalies: anomalies,\n    anomaly_count: anomalies.length\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        -80
+      ],
+      "id": "4d51a7b4-45a3-45b8-aac2-49f2d9fe80b5",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-flash-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        288,
+        112
+      ],
+      "id": "4db63fd2-32b9-4ccf-9b20-d9da828ad0b5",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "NnPAuP0YvEMKZwvA",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a data analyst writing for a nonprofit board.\n\nHere is the reconciliation result:\n\nReporting Period: {{ $json.reporting_period }}\nRaw Salesforce Records: {{ $json.raw_salesforce_count }}\nAfter Cleaning: {{ $json.after_date_filter }}\nUnique Families Served: {{ $json.unique_families }}\nAnnual Report States: {{ $json.annual_report_value }}\nGap: {{ $json.gap }}\n\nAnomalies Found:\n{{ $json.anomalies.join('\\n') }}\n\nWrite ONE short paragraph for a non-technical board audience explaining:\n- What the Salesforce data showed after cleaning\n- What the gap is and the most likely cause\n- What the recommended next step is\n\nBe clear, confident and concise. No bullet points. No technical jargon.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        352,
+        -96
+      ],
+      "id": "bffaff6c-b3d2-4ccf-96ae-d8e1b134e52a",
+      "name": "AI Summary"
+    },
+    {
+      "parameters": {
+        "folderId": "default",
+        "title": "Reconciliation Report"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        704,
+        -96
+      ],
+      "id": "f97e1038-ab72-4f2f-b87f-d2d30a5fd728",
+      "name": "Create a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "pOjU55ZQxprk1OEz",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "=RECONCILIATION REPORT - {{ $('Code in JavaScript').item.json.reporting_period }}\n\nBOARD SUMMARY:\n{{ $('AI Summary').item.json.text }}\n\nRAW NUMBERS:\n- Salesforce Raw Count: {{ $('Code in JavaScript').item.json.raw_salesforce_count }}\n- After Status Filter: {{ $('Code in JavaScript').item.json.after_status_filter }}\n- After Date Filter: {{ $('Code in JavaScript').item.json.after_date_filter }}\n- Unique Families Served: {{ $('Code in JavaScript').item.json.unique_families }}\n- Annual Report Value: {{ $('Code in JavaScript').item.json.annual_report_value }}\n- Gap: {{ $('Code in JavaScript').item.json.gap }}\n\nANOMALIES FLAGGED:\n{{ $('Code in JavaScript').item.json.anomalies.join('\\n') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        912,
+        -96
+      ],
+      "id": "ee257a0c-2e9b-4931-b846-08a27c8a60ce",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "pOjU55ZQxprk1OEz",
+          "name": "Google Docs account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Salesforce_Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Annual Data": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salesforce_Data": {
+      "main": [
+        [
+          {
+            "node": "Annual Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "AI Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Summary",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Summary": {
+      "main": [
+        [
+          {
+            "node": "Create a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a document": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "8f392b6c-7ede-4fcc-a63a-a09e3b3e576d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4ae4f03f46e5c106da38031bb2c1dd6bdb4725d3112b511494b6db836c41de6a"
+  },
+  "id": "VcTRS1vXcere7a1l",
+  "tags": []
+}
